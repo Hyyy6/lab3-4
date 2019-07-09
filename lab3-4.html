@@ -1,0 +1,98 @@
+<head>
+    <title>Rental service</title>
+</head>
+<body>
+<h1>Rental service</h1>
+
+{{> Invent}}
+
+<hr style="height:5px;border:none;color:#333;background-color:#333;">
+
+{{> Journal}}
+
+<button class="populate" onclick='for (var i = 0; i < 10000; i++){
+        InventList.insert({type: ("type_" + i) + "_" + Math.floor(Math.random()*10  ), size: -1, quantity: -1});
+    }'>Populate with garbage</button>
+</body>
+
+<template name="Invent">
+    <div style="display:flex; flex-direction: row; justify-content: left; align-items: center">
+        <div>
+            <form>
+                <input type="text" name="inventType" value="Inventory type"
+                       onfocus="if(this.value=='Inventory type')this.value='';"
+                       onfocusout="if(this.value=='')this.value='Inventory type';">
+                <input type="text" name="inventSize" value="Size" onfocus="if(this.value=='Size')this.value='';"
+                       onfocusout="if(this.value=='')this.value='Size';">
+                <input type="submit" value="Add inventory kit">
+            </form>
+
+            <button class="removeInvent">Remove kit</button>
+        </div>
+
+        <div style="width: 20px"></div>
+
+        <label class="switch">
+            <input type="checkbox" id="sortSwitch">
+            <span class="slider round"></span>
+        </label>
+        <span>Sort by overall rental time.</span>
+    </div>
+
+
+    <table class="inventList">
+        <tr>
+            <th>Inventory type</th>
+            <th>Inventory size</th>
+            <th>Kits available</th>
+            <th class="timeRented" style="display:none;">Time Rented</th>
+        </tr>
+    </table>
+    <div style="height: 35%; resize: vertical; overflow-y:auto;">
+        <table class="inventList">
+            {{#each kit}}
+                <tr class="kit {{selectedClass}}">
+                    <td>{{type}}</td>
+                    <td>{{size}}</td>
+                    <td>{{quantity}}</td>
+                    <td class="timeRented" style="display:none;">{{timeRented}}</td>
+                </tr>
+            {{/each}}
+        </table>
+    </div>
+
+</template>
+
+<template name="Journal">
+    <form>
+        <input type="text" name="name" value="Name" onfocus="if(this.value=='Name')this.value='';" onfocusout="if(this.value=='')this.value='Name';">
+        <input type="text" name="inventType" value="Inventory type" onfocus="if(this.value=='Inventory type')this.value='';" onfocusout="if(this.value=='')this.value='Inventory type';">
+        <input type="text" name="inventSize" value="Size" onfocus="if(this.value=='Size')this.value='';" onfocusout="if(this.value=='')this.value='Size';">
+        <input type="text" name="dateOut" value="Date of lending" onfocus="if(this.value=='Date of lending')this.value='';" onfocusout="if(this.value=='')this.value='Date of lending';">
+        <input type="text" name="dateIn" value="Date of giving back" onfocus="if(this.value=='Date of giving back')this.value='';" onfocusout="if(this.value=='')this.value='Date of giving back';">
+        <input type="submit" value="Add to journal">
+    </form>
+    <button class="turnIn">Turn the kit in</button>
+    <button class="removeLog">Delete the position in journal</button>
+
+    <div style="height: 35%;resize: vertical; overflow-y:auto;">
+        <table class="journalList">
+            <tr>
+                <th>Name</th>
+                <th>Inventory type</th>
+                <th>Inventory size</th>
+                <th>Date out</th>
+                <th>Date in</th>
+            </tr>
+            {{#each log}}
+                <tr class="log {{selectedClass}}">
+                    <td>{{name}}</td>
+                    <td>{{type}}</td>
+                    <td>{{size}}</td>
+                    <td>{{dateOut}}</td>
+                    <td>{{dateIn}}</td>
+                </tr>
+            {{/each}}
+        </table>
+    </div>
+</template>
